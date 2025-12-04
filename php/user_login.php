@@ -16,7 +16,7 @@ $row = mysqli_num_rows($result);
             
 		$row9 = mysqli_fetch_array($result9);
 		$name9 = $row9['username'];
-		$sql8 = "INSERT INTO logins values('','$uname',CURRENT_TIMESTAMP,'')";
+		$sql8 = "INSERT INTO logins values('','$uname',CURRENT_TIMESTAMP)";
         $result8 = mysqli_query($conn,$sql8);   
         if($uname == 'admin'/* || $uname == 'overide*/){
             header( 'Location: ../admin.php');
