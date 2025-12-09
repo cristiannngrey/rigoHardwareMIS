@@ -13,7 +13,7 @@
             case "add":
                 if(!empty($_POST["quantity"])) {
                     $productByCode = $db_handle->runQuery("SELECT * FROM items WHERE item_code='" . $_GET["item_code"] . "'");
-                    $itemArray = array($productByCode[0]["item_code"]=>array('item_name'=>$productByCode[0]["item_name"], 'item_code'=>$productByCode[0]["item_code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["price"], 'image'=>$productByCode[0]["image"]));
+                    $itemArray = array($productByCode[0]["item_code"]=>array('item_name'=>$productByCode[0]["item_name"], 'item_code'=>$productByCode[0]["item_code"], 'quantity'=>$_POST["quantity"], 'price'=>$productByCode[0]["item_price"]));
                     
                     if(!empty($_SESSION["cart_item"])) {
                         if(in_array($productByCode[0]["item_code"],array_keys($_SESSION["cart_item"]))) {
@@ -97,11 +97,10 @@
             <table class="tbl-cart">
                 <tbody>
                     <tr>
-                        <th style="text-align:left;">Item Name</th>
-                        <th style="text-align:right;" width="5%">Quantity</th>
-                        <th style="text-align:right;" width="20%">Unit Price</th>
-                        <th style="text-align:right;" width="25%">Price</th>
-                        <th style="text-align:center;" width="5%">Remove</th>
+                        <th style="text-align:left;">Code</th>
+                        <th style="text-align:right;" width="5%">Item Name</th>
+                        <th style="text-align:right;" width="20%">Quantity</th>
+                        <th style="text-align:right;" width="25%">Unit Price</th>
                     </tr>	
                     <?php		
                         foreach ($_SESSION["cart_item"] as $item){
@@ -109,17 +108,17 @@
                             ?>
                                     <tr>
                                     <td><?php echo $item["item_code"]; ?></td>
-                                    <td><?php echo $item["name"]; ?></td>
+                                    <td><?php echo $item["item_name"]; ?></td>
                                     <td style="text-align:right;"><?php echo $item["quantity"]; ?></td>
                                     <td  style="text-align:right;"><?php echo "P ".$item["price"]; ?></td>
                                     <td  style="text-align:right;"><?php echo "P ". number_format($item_price,2); ?></td>
-                                    <td style="text-align:center;"><a href="cashier.php?action=remove&id=<?php echo $item["id"]; ?>" class="btnRemoveAction"><img src="includes/icon-delete.png" alt="Remove Item" /></a></td>
+                                    <td style="text-align:center;"><a class="btnRemoveAction" href="cashier.php?action=remove&id=<?php echo $item["item_code"];?>"> <img src="includes/icon-delete.png" alt="Remove Item"></a></td>
                                     </tr>
-                                    <?php
+                                <?php
                                     $total_quantity += $item["quantity"];
                                     $total_price += ($item["price"]*$item["quantity"]);
-                            }
-                            ?>
+                        }      
+                                ?> 
 
                     <tr>
                         <td>Total Qty:</td>
